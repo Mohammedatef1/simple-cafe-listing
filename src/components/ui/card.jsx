@@ -1,14 +1,13 @@
 import PropTypes from "prop-types";
-import img1 from "../../assets/1.jpg";
 
-const Card = ({ className, name, rating, price, popular, votes, available }) => {
+const Card = ({ className, name, rating, price, popular, votes, available, img }) => {
   return (
     <div className={`mt-4 ${className} px-4`}>
       <div className="w-full h-[60%] overflow-hidden rounded-lg relative">
         <img
-          src={img1}
+          src={img}
           alt="coffee"
-          className=""
+          className="h-full w-full object-cover transition duration-300 transform hover:scale-105"
         />
         {popular && <p className="absolute top-3 left-3 px-4 py-1 text-sm bg-[#f4c967] rounded-full font-semibold text-zinc-800 ">Popular</p>}
       </div>
@@ -40,6 +39,7 @@ Card.propTypes = {
   popular: PropTypes.bool.isRequired,
   votes: PropTypes.number.isRequired,
   available: PropTypes.bool.isRequired,
+  img: PropTypes.string.isRequired,
 };
 
 // Define default props for the component

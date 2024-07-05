@@ -1,4 +1,10 @@
 import { useState } from "react";
+import { default as img1, default as img7 } from "../../assets/1.jpg";
+import { default as img2, default as img8 } from "../../assets/2.jpg";
+import { default as img3, default as img9 } from "../../assets/3.jpg";
+import img4 from "../../assets/4.jpg";
+import img5 from "../../assets/5.jpg";
+import img6 from "../../assets/6.jpg";
 import cover from "../../assets/cover.jpg";
 import data from "../../assets/data.json";
 import Card from "../ui/card";
@@ -34,7 +40,7 @@ const Home = () => {
           </button>
         </div>
         <div className="mt-4 flex flex-wrap mx-24">
-          {data.items.map((item) => {
+          {data.items.map((item, index) => {
             if (isSelected === "all" || (isSelected === "available" && item.available)) {
               return (
                 <Card
@@ -45,7 +51,7 @@ const Home = () => {
                   rating={item.rating}
                   votes={item.votes}
                   available={item.available}
-                  img={item.img}
+                  img={index === 0 ? img1 : index === 1 ? img2 : index === 2 ? img3 : index === 3 ? img4 : index === 4 ? img5 : index === 5 ? img6 : index === 6 ? img7 : index === 7 ? img8 : img9}
                   popular={item.popular}
                 />
               );
