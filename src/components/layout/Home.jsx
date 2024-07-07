@@ -1,16 +1,22 @@
 import { useState } from "react";
-import { default as img1, default as img7 } from "../../assets/1.jpg";
-import { default as img2, default as img8 } from "../../assets/2.jpg";
-import { default as img3, default as img9 } from "../../assets/3.jpg";
-import img4 from "../../assets/4.jpg";
-import img5 from "../../assets/5.jpg";
-import img6 from "../../assets/6.jpg";
+import { useQuery } from "react-query";
 import cover from "../../assets/cover.jpg";
-import data from "../../assets/data.json";
 import Card from "../ui/card";
+import Spinner from "../ui/Spinner";
 
 const Home = () => {
   const [isSelected, setIsSelected] = useState("all");
+
+  const { data: items, isLoading } = useQuery("data", () => fetch("https://raw.githubusercontent.com/devchallenges-io/web-project-ideas/main/front-end-projects/data/simple-coffee-listing-data.json").then((res) => res.json()));
+
+  let filteredItems;
+
+  if (isSelected === "all" && items) {
+    filteredItems = items;
+  } else if (isSelected == "available" && items) {
+    filteredItems = items.filter((item) => item.available);
+  }
+
   return (
     <main>
       <div className=" h-64 overflow-hidden -z-10 absolute top-0 left-0">
@@ -39,25 +45,28 @@ const Home = () => {
             Available now
           </button>
         </div>
-        <div className="mt-4 flex flex-wrap mx-24">
-          {data.items.map((item, index) => {
-            if (isSelected === "all" || (isSelected === "available" && item.available)) {
-              return (
-                <Card
-                  key={item.id}
-                  className="w-full md:w-1/2 lg:w-1/3"
-                  name={item.name}
-                  price={item.price}
-                  rating={item.rating}
-                  votes={item.votes}
-                  available={item.available}
-                  img={index === 0 ? img1 : index === 1 ? img2 : index === 2 ? img3 : index === 3 ? img4 : index === 4 ? img5 : index === 5 ? img6 : index === 6 ? img7 : index === 7 ? img8 : img9}
-                  popular={item.popular}
-                />
-              );
-            }
-          })}
-        </div>
+        {isLoading && (
+          <div>
+            <Spinner />
+          </div>
+        )}
+        {items && !isLoading && (
+          <div className="mt-4 flex flex-wrap mx-12 md:mx-18 lg:mx-24">
+            {filteredItems.map((item) => (
+              <Card
+                key={item.id}
+                className="w-full md:w-1/2 lg:w-1/3"
+                name={item.name}
+                price={item.price}
+                rating={item.rating}
+                votes={item.votes}
+                available={item.available}
+                img={item.image}
+                popular={item.popular}
+              />
+            ))}
+          </div>
+        )}
       </section>
     </main>
   );
